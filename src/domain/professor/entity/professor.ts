@@ -13,7 +13,7 @@ export class Professor {
 
     public static create(cpf: string, nome: string, email: string, senha: string) {
         return new Professor({
-            id: crypto.randomUUID.toString(),
+            id: crypto.randomUUID().toString(),
             cpf,
             nome,              // CRIPTOGRAFAR CPF, EMAIL, SENHA
             email, 
