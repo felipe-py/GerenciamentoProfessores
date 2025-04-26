@@ -1,0 +1,43 @@
+# ================================================
+# GerenciamentoProfessores - Testes de Rotas
+# Ambiente: Localhost
+# Base URL: http://localhost:8000
+# ================================================
+
+@host = http://localhost:8000
+
+
+###
+# ------------------------------------------------
+# [POST] Criar novo cadastro
+# Descrição: Cria um novo usuário no sistema.
+# Endpoint: POST /cadastro
+# Body: JSON com cpf, nome, email e senha
+# Exemplo de resposta esperada: 201 Created
+# ------------------------------------------------
+POST {{host}}/cadastro
+Content-Type: application/json
+
+{
+  "cpf": "85214965715",
+  "nome": "Victor Sarinho",
+  "email": "Sar@uefs.br",
+  "senha": "7542"
+}
+
+###
+
+# ------------------------------------------------
+# [POST] Login de usuário
+# Descrição: Realiza login com email e senha.
+# Endpoint: POST /login
+# Body: JSON com email e senha
+# Exemplo de resposta esperada: 200 OK + Token de autenticação
+# ------------------------------------------------
+POST {{host}}/login
+Content-Type: application/json
+
+{
+  "email": "J@uefs.br",
+  "senha": "1456"
+}
