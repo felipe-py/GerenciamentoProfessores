@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
 import { Route } from './routes/route';
 import { Api } from '../api';
-import cors from 'cors'; // Importando o middleware CORS
+import cors from 'cors'; 
 
 export class ApiExpress implements Api {
 
