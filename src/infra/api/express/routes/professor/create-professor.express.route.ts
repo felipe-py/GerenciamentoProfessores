@@ -17,7 +17,7 @@ export class CreateProfessorRoute implements Route {
 
     public static create (createProfessorService: createProfessorUsecase): CreateProfessorRoute {
         return new CreateProfessorRoute(
-            "/professor",
+            "/cadastro",
             HttpMethod.POST,
             createProfessorService
         );
