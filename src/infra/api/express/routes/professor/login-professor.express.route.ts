@@ -17,7 +17,7 @@ export class LoginProfessorRoute implements Route {
 
     public static create (loginProfessorService: loginProfessorUsecase): LoginProfessorRoute {
         return new LoginProfessorRoute(
-            "/professor/login",
+            "/login",
             HttpMethod.POST,
             loginProfessorService
         );
