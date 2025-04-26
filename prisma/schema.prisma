@@ -20,5 +20,5 @@ model Professor {
   cpf   String @unique
   nome  String 
   email  String @unique
-  senha    String @unique
+  senha    String 
 }
