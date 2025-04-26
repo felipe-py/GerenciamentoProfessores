@@ -13,14 +13,34 @@ export class ProfessorRepositoryPrisma implements ProfessorGateway {
     public async save(professor: Professor): Promise<void> {
         const data = {
             id: professor.id,
-            nome: professor.nome,
-            email: professor.email,       // AQUI DENTRO OCORRE A CONVERSÃO DE ENTIDADE PARA MODELO PRISMA
-            senha: professor.senha,
             cpf: professor.cpf,
+            nome: professor.nome,       // AQUI DENTRO OCORRE A CONVERSÃO DE ENTIDADE PARA MODELO PRISMA
+            email: professor.email,
+            senha: professor.senha,
         };
 
         await this.prismaClient.professor.create({
             data,
         });
+    }
+
+    public async find_by_email(email: string): Promise<Professor | null> {
+        const professor_data = await this.prismaClient.professor.findUnique({
+            where: { email },
+        });
+
+        console.log("ESTE LOG ESTA EM PROFESSOR REPOSITORY PRISMA: ", professor_data)
+
+        if (!professor_data) {
+            return null;
+        }
+        
+        return  Professor.create(
+            professor_data.cpf,
+            professor_data.nome,
+            professor_data.email,
+            professor_data.senha
+        );
+    
     }
 }
