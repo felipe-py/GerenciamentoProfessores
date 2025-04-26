@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import { Route } from './routes/route';
 import { Api } from '../api';
+import cors from 'cors'; // Importando o middleware CORS
 
 export class ApiExpress implements Api {
 
@@ -9,6 +10,7 @@ export class ApiExpress implements Api {
     private constructor(routes: Route[]) {
         this.app = express();
         this.app.use(express.json());
+        this.app.use(cors()); // Adicionando o middleware CORS para permitir requisições de qualquer origem
         this.addRoutes(routes);
     }
 
