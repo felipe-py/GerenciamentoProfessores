@@ -1,3 +1,5 @@
+import bcrypt from "bcrypt";
+
 export type ProfessorProps = {
     id: string;
     cpf: string;
@@ -11,19 +13,21 @@ export class Professor {
 
     private constructor(private props: ProfessorProps) {}
 
-    public static create(cpf: string, nome: string, email: string, senha: string) {
+    public static async create(cpf: string, nome: string, email: string, senha: string) {
        
         this.validadeCpf(cpf);
         this.validadeNome(nome);
         this.validadeEmail(email);
         this.validadeSenha(senha);
 
+        const senhaHash = await bcrypt.hash(senha, 10); 
+
         return new Professor({
             id: crypto.randomUUID().toString(),
             cpf,
             nome,              
             email, 
-            senha,
+            senha: senhaHash
         });
     }
 

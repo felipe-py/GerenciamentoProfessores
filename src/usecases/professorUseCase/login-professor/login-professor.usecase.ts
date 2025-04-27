@@ -1,6 +1,7 @@
 import { Professor } from "../../../domain/professor/entity/professor";
 import { ProfessorGateway } from "../../../domain/professor/gateway/professor.gateway";
 import { Usecase } from "../../usecase"
+import bcrypt from "bcrypt";
 
 // DADOS DE ENTRADA
 export type loginProfessorInputDto = {
@@ -37,7 +38,7 @@ export class loginProfessorUsecase
                 throw new Error("Professor não encontrado");
             }
 
-            const senhaValida = professor.senha === senha;
+            const senhaValida = await bcrypt.compare(senha, professor.senha); 
 
             console.log(professor)
 
