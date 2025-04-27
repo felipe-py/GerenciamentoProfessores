@@ -32,9 +32,9 @@ export class createProfessorUsecase
         }: createProfessorInputDto): Promise<createProfessorOutputDto> {
             const aProfessor = Professor.create(cpf, nome, email, senha);
 
-            await this.professorGateway.save(aProfessor);
+            await this.professorGateway.save(await aProfessor);
 
-            const output = this.presentOutput(aProfessor);
+            const output = this.presentOutput(await aProfessor);
             return output; 
         }
 
