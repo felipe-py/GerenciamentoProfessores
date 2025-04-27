@@ -26,10 +26,10 @@ POST {{host}}/cadastro
 Content-Type: application/json
 
 {
-  "cpf": "85214965715",
-  "nome": "Victor Sarinho",
-  "email": "Sar@uefs.br",
-  "senha": "7542"
+  "cpf": "74512589948",
+  "nome": "Bianca Santana",
+  "email": "B@uefs.br",
+  "senha": "4422"
 }
 
 # CENÁRIOS DE LOGIN TESTADOS
@@ -49,6 +49,6 @@ POST {{host}}/login
 Content-Type: application/json
 
 {
-  "email": "J@uefs.br",
-  "senha": "1456"
+  "email": "B@uefs.br",
+  "senha": "4422"
 }
