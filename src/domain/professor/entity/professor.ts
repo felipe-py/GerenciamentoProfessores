@@ -1,4 +1,6 @@
 import bcrypt from "bcrypt";
+import { z } from "zod";
+import crypto from "crypto";
 
 export type ProfessorProps = {
     id: string;
@@ -8,6 +10,18 @@ export type ProfessorProps = {
     senha: string;
 }
 
+const ProfessorSchema = z.object({
+    cpf: z.string()
+        .length(11, "CPF deve conter 11 dígitos")
+        .regex(/^\d+$/, "CPF deve conter apenas números"),
+    nome: z.string()
+        .min(3, "Nome deve ter pelo menos 3 caracteres")
+        .regex(/^[a-zA-Z\s]+$/, "Nome deve conter apenas letras e espaços"),
+    email: z.string()
+        .min(5, "Email deve ter pelo menos 5 caracteres"),
+    senha: z.string()
+        .min(4, "Senha deve ter no mínimo 4 caracteres")    
+});
 
 export class Professor {
 
@@ -15,10 +29,7 @@ export class Professor {
 
     public static async create(cpf: string, nome: string, email: string, senha: string) {
        
-        this.validadeCpf(cpf);
-        this.validadeNome(nome);
-        this.validadeEmail(email);
-        this.validadeSenha(senha);
+        ProfessorSchema.parse({ cpf, nome, email, senha }); // Validação dos dados de entrada usando Zod
 
         const senhaHash = await bcrypt.hash(senha, 10); 
 
@@ -54,54 +65,5 @@ export class Professor {
     public get senha() {
         return this.props.senha;
     }
-
-    private static validadeCpf(cpf: string) : void {
-        if (!cpf) {
-            throw new Error("CPF não pode ser vazio");
-        }
-
-        if (cpf.length !== 11) {
-            throw new Error("CPF deve ter 11 dígitos");
-        }
-
-        if (!/^\d+$/.test(cpf)) {
-            throw new Error("CPF deve conter apenas números");
-        }
-    }
-
-    private static validadeNome(nome: string) : void {
-        if (!nome) {
-            throw new Error("Nome não pode ser vazio");
-        }
-
-        if (nome.length < 3) {
-            throw new Error("Nome deve ter pelo menos 3 caracteres");
-        }
-
-        if (!/^[a-zA-Z\s]+$/.test(nome)) {
-            throw new Error("Nome deve conter apenas letras e espaços");
-        }
-    }
-
-    private static validadeEmail(email: string) : void {
-        if (!email) {
-            throw new Error("Email não pode ser vazio");
-        }
-
-        if (email.length < 5) {
-            throw new Error("Email deve ter pelo menos 5 caracteres");
-        }
-    }
-
-    private static validadeSenha(senha: string) : void {
-        if (!senha) {
-            throw new Error("Senha não pode ser vazia");
-        }
-
-        if (senha.length !== 4) {
-            throw new Error("Senha deve ter 4 caracteres");
-        }
-    }
-
 
 }
