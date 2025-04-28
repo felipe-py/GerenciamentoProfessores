@@ -25,19 +25,35 @@ export class LoginProfessorRoute implements Route {
 
     public getHandler() {
         return async (request: Request, response: Response) => {
-            const { email, senha } = request.body;
 
-            const input = {
-                email,
-                senha,
-            };
+            try {
 
-            const output: LoginProfessorResponseDto = 
-                await this.loginProfessorService.execute(input);
+                const { email, senha } = request.body;
 
-            const responseBody = this.present(output);
+                const input = {
+                    email,
+                    senha,
+                };
 
-            response.status(200).json(responseBody);
+                const output: LoginProfessorResponseDto = 
+                    await this.loginProfessorService.execute(input);
+
+                const responseBody = this.present(output);
+
+                response.status(200).json(responseBody);
+                console.log("Login realizado com sucesso! => Email: ", output.email);
+
+
+            } catch (error) {
+
+                const { statusCode, body } = this.presentError(error);
+
+                response.status(statusCode).json({ body });
+                console.error("Erro ao realizar login: ", body.message);
+
+            }
+
+            
 
         };
     }
@@ -56,6 +72,35 @@ export class LoginProfessorRoute implements Route {
             email: input.email,
         }
         return response;
+    }
+
+    private presentError( error: unknown): {statusCode: number, body: any} {
+        if (error instanceof Error) {
+            
+            if (error.message === "Professor não encontrado") {
+                return {
+                    statusCode: 404,
+                    body: { message: error.message },
+                };
+
+            } else if (error.message === "Senha inválida") {
+                return {
+                    statusCode: 401,
+                    body: { message: error.message },
+                };
+
+            } 
+
+            return {
+                statusCode: 400,
+                body: { message: error.message },
+            };
+        }
+
+        return {
+            statusCode: 500,
+            body: { message: "Erro interno do servidor" },
+        };
     }
 
 }
