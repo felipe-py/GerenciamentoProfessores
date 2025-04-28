@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { createProfessorInputDto, createProfessorUsecase } from "../../../../../usecases/professorUseCase/create-professor/create-professor.usecase";
 import { HttpMethod, Route } from "../route";
+import { ZodError } from "zod";
 
 export type CreateProfessorResponseDto = {
     nome: string;
@@ -25,22 +26,36 @@ export class CreateProfessorRoute implements Route {
 
     public getHandler() {
         return async (request: Request, response: Response) => {
-            const { cpf, nome, email, senha} = request.body;
 
-            const input: createProfessorInputDto = {
-                cpf, 
-                nome,
-                email,
-                senha,
-            };
+            try {
 
-            const output: CreateProfessorResponseDto = 
-                await this.createProfessorService.execute(input);
+                const { cpf, nome, email, senha} = request.body;
 
-            const responseBody = this.present(output);
+                const input: createProfessorInputDto = {
+                    cpf, 
+                    nome,
+                    email,
+                    senha,
+                };
 
-            response.status(201).json(responseBody);
+                const output: CreateProfessorResponseDto = 
+                    await this.createProfessorService.execute(input);
 
+                const responseBody = this.present(output);
+
+                response.status(201).json(responseBody);
+
+                console.log("Professor cadastrado com sucesso!");
+                console.table({ Nome: nome, Email: email, CPF: cpf });
+
+            } catch (error) {
+
+                const { statusCode, body } = this.presentError(error);
+
+                response.status(statusCode).json(body);
+
+                console.error("Erro ao cadastrar professor:", body.message);
+            }
         };
     }
 
@@ -58,5 +73,28 @@ export class CreateProfessorRoute implements Route {
         }
         return response;
     }
+
+    private presentError(error: unknown): { statusCode: number, body: any } {
+        if (error instanceof ZodError) {
+            return {
+                statusCode: 400,
+                body: {
+                    message: "Erro de validação dos dados enviados.",
+                    errors: error.errors.map(err => ({
+                        field: err.path.join("."),
+                        message: err.message,
+                    })),
+                },
+            };
+        }
+    
+        return {
+            statusCode: 500,
+            body: {
+                message: "Erro interno no servidor.",
+            },
+        };
+    }
+    
 
 }
