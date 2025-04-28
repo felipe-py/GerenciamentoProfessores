@@ -1,6 +1,7 @@
 import { Professor } from "../../../domain/professor/entity/professor";
 import { ProfessorGateway } from "../../../domain/professor/gateway/professor.gateway";
 import { Usecase  } from "../../usecase"
+import { ZodError } from "zod";
 
 // DADOS DE ENTRADA DO CASO DE USO
 export type createProfessorInputDto = {
@@ -30,20 +31,29 @@ export class createProfessorUsecase
             email,
             senha,
         }: createProfessorInputDto): Promise<createProfessorOutputDto> {
+
+            try {
             const aProfessor = Professor.create(cpf, nome, email, senha);
 
             await this.professorGateway.save(await aProfessor);
 
             const output = this.presentOutput(await aProfessor);
             return output; 
-        }
-
-        private presentOutput(professor: Professor): createProfessorOutputDto {
-            const output: createProfessorOutputDto = {
-                nome: professor.nome,
+        } catch (error) {
+            if (error instanceof ZodError) {
+                throw error;
             }
 
-            return output;
+                throw new Error("Erro ao criar professor: " + error);
+            }
+        } 
+    
+        private presentOutput(professor: Professor): createProfessorOutputDto {
+        const output: createProfessorOutputDto = {
+            nome: professor.nome,
+        }
+
+        return output;
 
         }
     }
