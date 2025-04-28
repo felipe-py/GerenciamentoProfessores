@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { loginProfessorUsecase } from "../../../../../usecases/professorUseCase/login-professor/login-professor.usecase";
 import { HttpMethod, Route } from "../route";
+import { JwtTokenService } from "../../../../token/jwt-token.service";
 
 export type LoginProfessorResponseDto = {
-    nome: string;
-    email: string;
+    token: string;
 }
 
 export class LoginProfessorRoute implements Route {
@@ -41,7 +41,7 @@ export class LoginProfessorRoute implements Route {
                 const responseBody = this.present(output);
 
                 response.status(200).json(responseBody);
-                console.log("Login realizado com sucesso! => Email: ", output.email);
+                console.log("Login realizado com sucesso! => Email: ", output.token);
 
 
             } catch (error) {
@@ -52,9 +52,6 @@ export class LoginProfessorRoute implements Route {
                 console.error("Erro ao realizar login: ", body.message);
 
             }
-
-            
-
         };
     }
 
@@ -67,11 +64,9 @@ export class LoginProfessorRoute implements Route {
     }
 
     private present(input: LoginProfessorResponseDto): LoginProfessorResponseDto {
-        const response = {
-            nome: input.nome,
-            email: input.email,
-        }
-        return response;
+        return {
+            token: input.token,
+        };
     }
 
     private presentError( error: unknown): {statusCode: number, body: any} {
