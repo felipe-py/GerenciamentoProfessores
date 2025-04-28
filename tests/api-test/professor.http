@@ -9,14 +9,16 @@
 
 # CENÁRIOS DE CADASTRO TESTADOS
 # 1. Cadastro de um novo professor com sucesso
-# 2. Cadastro de um novo professor com CPF inválido
-# 3. Cadastro de um novo professor com senha inválido
-# 4. Cadastro de um novo professor com email existente
-# 5. Cadastro de um novo professor com CPF existente
+# 2. Cadastro de um novo professor com CPF inválido (!= 11 dígitos)
+# 3. Cadastro de um novo professor com CPF inválido (!= apenas números)
+# 4. Cadastro de um novo professor com nome inválido (< 3 caracteres)
+# 5. Cadastro de um novo professor com nome inválido (!= apenas nomes e espaços)
+# 6. Cadastro de um novo professor com email inválido (< 5 caracteres>)
+# 7. Cadastro de um novo professor com senha inválida (< 4 caracteres>)
 
 ###
 # ------------------------------------------------
-# [POST] Criar novo cadastro
+# 1. [POST] Criar novo cadastro
 # Descrição: Cria um novo usuário no sistema.
 # Endpoint: POST /cadastro
 # Body: JSON com cpf, nome, email e senha
@@ -29,8 +31,117 @@ Content-Type: application/json
   "cpf": "74512589948",
   "nome": "Bianca Santana",
   "email": "B@uefs.br",
-  "senha": "4422"
+  "senha": "445566"
 }
+
+###
+# ------------------------------------------------
+# 2. [POST] Criar novo cadastro
+# Descrição: Cria um novo usuário no sistema com CPF diferente de 11 dígitos
+# Endpoint: POST /cadastro
+# Body: JSON com cpf, nome, email e senha
+# Exemplo de resposta esperada: 400 Bad Request "CPF deve conter 11 dígitos"
+# ------------------------------------------------
+POST {{host}}/cadastro
+Content-Type: application/json
+
+{
+  "cpf": "74512589",
+  "nome": " Santana",
+  "email": "Brt@uefs.br",
+  "senha": "447766"
+}
+
+###
+# ------------------------------------------------
+# 3. [POST] Criar novo cadastro
+# Descrição: Cria um novo usuário no sistema com CPF diferente de apenas números
+# Endpoint: POST /cadastro
+# Body: JSON com cpf, nome, email e senha
+# Exemplo de resposta esperada: 400 Bad Request "CPF deve conter apenas números"
+# ------------------------------------------------
+POST {{host}}/cadastro
+Content-Type: application/json
+
+{
+  "cpf": "745125k9784",
+  "nome": " Santana",
+  "email": "Brt@uefs.br",
+  "senha": "847766"
+}
+
+###
+# ------------------------------------------------
+# 4. [POST] Criar novo cadastro
+# Descrição: Cria um novo usuário no sistema com nome menor que 3 caracteres
+# Endpoint: POST /cadastro
+# Body: JSON com cpf, nome, email e senha
+# Exemplo de resposta esperada: 400 Bad Request "nome deve ter pelo menos 3 caracteres"
+# ------------------------------------------------
+POST {{host}}/cadastro
+Content-Type: application/json
+
+{
+  "cpf": "74512599784",
+  "nome": "Sa",
+  "email": "Brt@uefs.br",
+  "senha": "847766"
+}
+
+###
+# ------------------------------------------------
+# 5. [POST] Criar novo cadastro
+# Descrição: Cria um novo usuário no sistema com nome diferente de letras e espaços
+# Endpoint: POST /cadastro
+# Body: JSON com cpf, nome, email e senha
+# Exemplo de resposta esperada: 400 Bad Request "nome deve conter apenas letras e espaços"
+# ------------------------------------------------
+POST {{host}}/cadastro
+Content-Type: application/json
+
+{
+  "cpf": "74512599784",
+  "nome": "S@ntana",
+  "email": "Brt@uefs.br",
+  "senha": "847796"
+}
+
+###
+# ------------------------------------------------
+# 6. [POST] Criar novo cadastro
+# Descrição: Cria um novo usuário no sistema com email menor que 5 caracteres
+# Endpoint: POST /cadastro
+# Body: JSON com cpf, nome, email e senha
+# Exemplo de resposta esperada: 400 Bad Request "Email deve ter pelo menos 5 caracteres"
+# ------------------------------------------------
+POST {{host}}/cadastro
+Content-Type: application/json
+
+{
+  "cpf": "74512599784",
+  "nome": "Santana",
+  "email": "Brt@",
+  "senha": "847526"
+}
+
+###
+# ------------------------------------------------
+# 7. [POST] Criar novo cadastro
+# Descrição: Cria um novo usuário no sistema com senha menor que 4 caracteres
+# Endpoint: POST /cadastro
+# Body: JSON com cpf, nome, email e senha
+# Exemplo de resposta esperada: 400 Bad Request "Senha deve ter no mínimo 4 caracteres"
+# ------------------------------------------------
+POST {{host}}/cadastro
+Content-Type: application/json
+
+{
+  "cpf": "74512599784",
+  "nome": "Santana",
+  "email": "Brt@uefs.br",
+  "senha": "847"
+}
+
 
 # CENÁRIOS DE LOGIN TESTADOS
 # 1. Login com sucesso
