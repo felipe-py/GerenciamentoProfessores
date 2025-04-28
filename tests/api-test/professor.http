@@ -161,5 +161,37 @@ Content-Type: application/json
 
 {
   "email": "B@uefs.br",
-  "senha": "4422"
+  "senha": "445566"
+}
+
+###
+# ------------------------------------------------
+# [POST] Login de usuário
+# Descrição: Realiza login com email inválido
+# Endpoint: POST /login
+# Body: JSON com email e senha
+# Exemplo de resposta esperada: 404 Not Found "Professor não encontrado"
+# ------------------------------------------------
+POST {{host}}/login
+Content-Type: application/json
+
+{
+  "email": "B@uefs.es",
+  "senha": "445566"
+}
+
+###
+# ------------------------------------------------
+# [POST] Login de usuário
+# Descrição: Realiza login com senha inválida
+# Endpoint: POST /login
+# Body: JSON com email e senha
+# Exemplo de resposta esperada: 401 Unauthorized "Senha inválida"
+# ------------------------------------------------
+POST {{host}}/login
+Content-Type: application/json
+
+{
+  "email": "B@uefs.br",
+  "senha": "445562"
 }
