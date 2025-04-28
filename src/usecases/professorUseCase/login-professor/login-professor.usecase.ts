@@ -1,3 +1,4 @@
+import { TokenService } from "../../../core/token/token-service.interface";
 import { Professor } from "../../../domain/professor/entity/professor";
 import { ProfessorGateway } from "../../../domain/professor/gateway/professor.gateway";
 import { Usecase } from "../../usecase"
@@ -11,17 +12,22 @@ export type loginProfessorInputDto = {
 
 // DADOS DE SAÍDA
 export type loginProfessorOutputDto = {
-    nome: string;
-    email: string;
+    token: string;
 }
 
 export class loginProfessorUsecase 
     implements Usecase<loginProfessorInputDto, loginProfessorOutputDto> {
 
-        private constructor(private readonly professorGateway: ProfessorGateway) {}
+        private constructor(
+            private readonly professorGateway: ProfessorGateway,
+            private readonly tokenService: TokenService,
+        ) {}
 
-        public static create(professorGateway: ProfessorGateway) {
-            return new loginProfessorUsecase(professorGateway);
+        public static create(
+            professorGateway: ProfessorGateway,
+            tokenService: TokenService,
+         ) {
+            return new loginProfessorUsecase(professorGateway, tokenService);
         }
 
         public async execute ({
@@ -51,9 +57,15 @@ export class loginProfessorUsecase
         } 
         
         private presentOutput(professor: Professor): loginProfessorOutputDto {
-            return {
-                nome: professor.nome,
+
+            const payload = {
+                id: professor.id,
                 email: professor.email,
-        };
+                nome: professor.nome,
+            }
+
+            const token = this.tokenService.generateToken(payload);
+
+            return { token } 
     }
 }
