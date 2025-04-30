@@ -54,7 +54,9 @@ export class CreateProfessorRoute implements Route {
 
                 response.status(statusCode).json(body);
 
-                console.error("Erro ao cadastrar professor:", body.message);
+                console.error("Erro ao cadastrar professor:", body
+                    
+                );
             }
         };
     }

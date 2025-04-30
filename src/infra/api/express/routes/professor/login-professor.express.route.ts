@@ -41,7 +41,7 @@ export class LoginProfessorRoute implements Route {
                 const responseBody = this.present(output);
 
                 response.status(200).json(responseBody);
-                console.log("Login realizado com sucesso! => Email: ", output.token);
+                console.log("Login realizado com sucesso! => Token: ", output.token);
 
 
             } catch (error) {

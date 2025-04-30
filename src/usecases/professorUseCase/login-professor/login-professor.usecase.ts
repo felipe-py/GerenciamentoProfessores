@@ -37,7 +37,6 @@ export class loginProfessorUsecase
 
             const professor = await this.professorGateway.find_by_email(email);
 
-            console.log(email)
             console.log(professor)
 
             if (!professor) {
@@ -45,8 +44,6 @@ export class loginProfessorUsecase
             }
 
             const senhaValida = await bcrypt.compare(senha, professor.senha); 
-
-            console.log(professor)
 
             if (!senhaValida) {
                 throw new Error("Senha inválida");
