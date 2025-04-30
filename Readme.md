@@ -32,6 +32,12 @@ Segue os princípios **S.O.L.I.D** e **Clean Architecture**, com separação em 
 
 - **Infra**: Rotas, banco de dados e geração de token.
 
+### Front-end
+
+O front-end deste projeto foi desenvolvido por [@carolinesanttos](https://github.com/carolinesanttos), e seu repositório pode ser acessado com o link abaixo:
+
+- [login-app](https://github.com/carolinesanttos/login-app)
+
 ## Scripts disponibilizados
 
 ```bash
